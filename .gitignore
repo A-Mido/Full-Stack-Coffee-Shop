@@ -1,7 +1,15 @@
 #... ignoring the virtual environment
+.vscode
+__pycache__
+venv
 
-/backend/venv
-/backend/__pycache__
-/backend/scr/database/__pycache__
-/backend/scr/auth/__pycache__
+# OS generated files
 
+
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*/node_modules/

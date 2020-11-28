@@ -95,7 +95,7 @@ def add_new_drink(payload):
         or appropriate status code indicating reason for failure
 '''
 
-@app.route('/drinks/<int: id>', methods=['PATCH'])
+@app.route('/drinks/<int:id>', methods=['PATCH'])
 @requires_auth('patch:drinks')
 def change_drink_content(payload, id):
     req = request.get_json()
@@ -134,7 +134,7 @@ def change_drink_content(payload, id):
         or appropriate status code indicating reason for failure
 '''
 
-@app.route('/drinks/<int: id>', methods=['DLETE'])
+@app.route('/drinks/<int:id>', methods=['DELETE'])
 @requires_auth('delete:drinks')
 def delete_drink(payload, id):
     drink = Drink.query.get(id)
