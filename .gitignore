@@ -1,0 +1,7 @@
+#... ignoring the virtual environment
+
+/backend/venv
+/backend/__pycache__
+/backend/scr/database/__pycache__
+/backend/scr/auth/__pycache__
+
