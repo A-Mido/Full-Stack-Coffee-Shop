@@ -31,19 +31,19 @@ class AuthError(Exception):
     return the token part of the header
 '''
 def get_token_auth_header():
-    auth = request.header.get("Authorization", None)
+    auth = request.headers.get("Authorization")
     if auth is None:
         raise AuthError({
         'message': 'Authorization header is missing.',
         'description': 'Expected authorization header.'}, 401)
 
-    head_parts = auth.split()
+    head_parts = auth.split(' ')
     if len(head_parts) != 2:
         raise AuthError({
         'error': 'Invalid authorization header.',
         'description': 'Expected header must has two parts.'}, 401)
 
-    if head_parts[0].lower() is not 'bearer':
+    if head_parts[0].lower() != 'bearer':
         raise AuthError({
         'error': 'Invalid authorization header.',
         'description': 'Authorization header must has a bearer.'}, 401)    
@@ -62,7 +62,7 @@ def get_token_auth_header():
     return true otherwise
 '''
 def check_permissions(permission, payload):
-    if payload['permissions'] is None:
+    if 'permissions' not in payload:
         raise AuthError({
         'error': 'Invalid permission',
         'description': 'Permissions is not included in the payload'}, 400)
