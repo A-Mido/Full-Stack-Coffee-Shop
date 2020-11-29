@@ -108,18 +108,15 @@ def add_new_drink(payload):
 @requires_auth('patch:drinks')
 def change_drink_content(payload, id):
     req = request.get_json()
-    title = req.get('title')
-    recipe = req.get('recipe')
-
     drink = Drink.query.get(id)
     if drink is None:
         abort(404)
     else:
         try:
-            if title:
-                drink.title = title
-            if recipe:
-                drink.recipe = recipe
+            title = req.get('title')
+            drink.title = title
+            recipe = req.get('recipe')
+            drink.recipe = recipe
 
             drink.update()
             return jsonify({

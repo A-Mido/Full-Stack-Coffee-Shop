@@ -41,7 +41,7 @@ def get_token_auth_header():
         'message': 'Authorization header is missing.',
         'description': 'Expected authorization header.'}, 401)
 
-    head_parts = auth.split(' ')
+    head_parts = auth.split()
     if len(head_parts) != 2:
         raise AuthError({
         'error': 'Invalid authorization header.',
@@ -51,8 +51,8 @@ def get_token_auth_header():
         raise AuthError({
         'error': 'Invalid authorization header.',
         'description': 'Authorization header must has a bearer.'}, 401)
-
-    return head_parts[1]
+    token = head_parts[1]
+    return token
 
 '''
 @Done implement check_permissions(permission, payload) method
@@ -110,10 +110,10 @@ def verify_decode_jwt(token):
 
     jwts_key = {}
     for key in jwts['keys']:
-        if unverified_header['kid'] is key['kid']:
+        if unverified_header['kid'] == key['kid']:
             jwts_key = {
-                'kid': key['kid'],
                 'kty': key['kty'],
+                'kid': key['kid'],
                 'use': key['use'],
                 'n': key['n'],
                 'e': key['e']
@@ -146,9 +146,7 @@ def verify_decode_jwt(token):
             'error': 'Invalid header',
             'description': 'Unable to parse authentication token'}, 401)
 
-        raise AuthError({
-        'error': 'Token error during decoding',
-        'description': 'Token is not decoded'}, 401)
+
 
 
 '''
@@ -171,6 +169,10 @@ def requires_auth(permission=''):
         def wrapper(*args, **kwargs):
             token = get_token_auth_header()
             payload = verify_decode_jwt(token)
+            if payload is None:
+                raise AuthError({
+                'error': 'Error during decoding',
+                'description': 'decoding is failed'}, 401)
             check_permissions(permission, payload)
             return f(payload, *args, **kwargs)
 
